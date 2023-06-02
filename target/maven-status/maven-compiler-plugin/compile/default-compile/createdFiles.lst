@@ -1,0 +1,8 @@
+com/mycompany/tpa11/JakartaRestConfiguration.class
+connection/MyConnection.class
+models/Produit.class
+dao/ProduitDAOInterface.class
+dao/ProduitDAOImplementation.class
+Servlets/NewServlet.class
+models/Client.class
+com/mycompany/tpa11/resources/JakartaEE8Resource.class
