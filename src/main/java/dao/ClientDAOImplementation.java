@@ -24,7 +24,7 @@ public class ClientDAOImplementation implements ClientDAOInterface {
     private Connection connection;
     //You have to get client by username for login, by id for account info, 
     
-    /*
+    /* Premiere implementation, mise-de-côté
     @Override
     public Client getClientById(int clientId) {
         try {
