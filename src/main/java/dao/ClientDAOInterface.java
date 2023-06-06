@@ -21,11 +21,11 @@ public interface ClientDAOInterface {
     void deleteClient(int clientId);
     
     Client getClientById(int clientId);
-    
+   
     
     List<Client> getAllClients();
 }
 
   
     
-}
+
