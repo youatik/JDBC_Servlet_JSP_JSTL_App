@@ -12,10 +12,19 @@ import models.Client;
  */
 public interface ClientDAOInterface {
     
-//void addClient(Client client);
-Client getClientById(int clientId);
-//void updateClient(Client client);
-//void deleteClient(int clientId);
+
+
+    void addClient(Client client);
+    
+    void updateClient(Client client);
+    
+    void deleteClient(int clientId);
+    
+    Client getClientById(int clientId);
+    
+    
+    List<Client> getAllClients();
+}
 
   
     
