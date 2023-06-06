@@ -13,19 +13,17 @@ public class Client {
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
     private String address;
 
     public Client() {
         // Default constructor
     }
 
-    public Client(int clientId, String firstName, String lastName, String email, String phone, String address) {
+    public Client(int clientId, String firstName, String lastName, String email, String address) {
         this.clientId = clientId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phone = phone;
         this.address = address;
     }
 
@@ -63,14 +61,6 @@ public class Client {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -87,7 +77,6 @@ public class Client {
       .append(", firstName='").append(firstName).append('\'')
       .append(", lastName='").append(lastName).append('\'')
       .append(", email='").append(email).append('\'')
-      .append(", phone='").append(phone).append('\'')
       .append(", address='").append(address).append('\'')
       .append('}');
     return sb.toString();
