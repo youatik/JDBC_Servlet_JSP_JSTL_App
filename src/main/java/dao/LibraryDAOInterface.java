@@ -19,5 +19,11 @@ public interface LibraryDAOInterface {
     
     Library getLibraryById(long eanIsbn13);
     
+    List<Library> findByTitle(String word);
+
+    List<Library> findByCreators(String word);
+
+    List<Library> findByDescription(String word);
+    
     List<Library> getAllLibraries();
 }
