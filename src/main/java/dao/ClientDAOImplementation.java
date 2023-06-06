@@ -4,37 +4,79 @@
  */
 package dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import connection.MyConnection;
 import models.Client;
-import models.Produit;
 
-/**
- *
- * @author youatik
- */
 public class ClientDAOImplementation implements ClientDAOInterface {
     private Connection connection;
-    //You have to get client by username for login, by id for account info, 
-    
-    /* Premiere implementation, mise-de-côté
+
+    public ClientDAOImplementation() {
+        this.connection = MyConnection.getInstance();
+    }
+
+    @Override
+    public void addClient(Client client) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO Test_Projet.client (firstName, lastName, email, address) VALUES (?, ?, ?, ?)");
+            preparedStatement.setString(1, client.getFirstName());
+            preparedStatement.setString(2, client.getLastName());
+            preparedStatement.setString(3, client.getEmail());
+            preparedStatement.setString(4, client.getAddress());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateClient(Client client) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE Test_Projet.client SET firstName = ?, lastName = ?, email = ?, address = ? WHERE clientId = ?");
+            preparedStatement.setString(1, client.getFirstName());
+            preparedStatement.setString(2, client.getLastName());
+            preparedStatement.setString(3, client.getEmail());
+            preparedStatement.setString(4, client.getAddress());
+            preparedStatement.setInt(5, client.getClientId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteClient(int clientId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM Test_Projet.client WHERE clientId = ?");
+            preparedStatement.setInt(1, clientId);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public Client getClientById(int clientId) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM produit WHERE client_id = ?");
-            preparedStatement.setLong(1, clientId);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM Test_Projet.client WHERE clientId = ?");
+            preparedStatement.setInt(1, clientId);
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return new Client((int) resultSet.getLong("id"), resultSet.getString("nom"), null, null, null, null);
-
+                return createClientFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,31 +84,35 @@ public class ClientDAOImplementation implements ClientDAOInterface {
 
         return null;
     }
-    */
-    
+
     @Override
-    public Client getClientById(int clientId) {
-    try {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM client WHERE client_id = ?");
-        preparedStatement.setInt(1, clientId);
-        ResultSet resultSet = preparedStatement.executeQuery();
+    public List<Client> getAllClients() {
+        List<Client> clients = new ArrayList<>();
 
-        if (resultSet.next()) {
-            int id = resultSet.getInt("client_id");
-            String firstName = resultSet.getString("first_name");
-            String lastName = resultSet.getString("last_name");
-            String email = resultSet.getString("email");
-            String address = resultSet.getString("address");
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM Test_Projet.client");
 
-            return new Client(id, firstName, lastName, email, null, address);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Client client = createClientFromResultSet(resultSet);
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+
+        return clients;
     }
 
-    return null;
-}
-    
-    
-    
+    private Client createClientFromResultSet(ResultSet resultSet) throws SQLException {
+        int clientId = resultSet.getInt("clientId");
+        String firstName = resultSet.getString("firstName");
+        String lastName = resultSet.getString("lastName");
+        String email = resultSet.getString("email");
+        String address = resultSet.getString("address");
+
+        return new Client(clientId, firstName, lastName, email, address);
+    }
 }
